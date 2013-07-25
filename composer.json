@@ -1,0 +1,21 @@
+{
+    "name": "djbarnes/l4-ldap-auth",
+    "description": "A LDAP Authentication Package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "david barnes",
+            "email": "barnesdavidj@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.0.x"
+    },
+    "autoload": {
+        "psr-0": {
+            "Djbarnes\\L4LdapAuth": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
