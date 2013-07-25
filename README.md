@@ -57,11 +57,11 @@ Run this on the command line from the root of your project:
 
     php artisan config:publish djbarnes/l4-ldap-auth
 
-This will publish Verify's config to ``app/config/packages/djbarnes/l4-ldap-auth/``.
+This will publish l4-ldap-auth's config to ``app/config/packages/djbarnes/l4-ldap-auth/``.
 
 ## Configuration
 
-Fill in the missing fields for the configuration file.
+Fill in the missing fields for the configuration file at the locatoin mentioned above.
 
 ```php
 return array(
@@ -69,14 +69,14 @@ return array(
   'ldapadmindn' => 'uid=admin,ou=special,ou=people,o=example.com,dc=example,dc=com',
   'ldapadminpw' => 'AdminPassword',
   'searchbase' => 'ou=people,o=example.com,dc=example,dc=com',
-  'searchfield' => 'uid',
+  'searchfield' => 'username',
 );
 ```
-*ldapserver* is the url to reach the ldap server
-*ldapadmindn* is the dn for the admin account that can do searches
-*ldapadminpw* is the password for the admin account that can do searches
-*searchbase* is the location in ldap that the search should occur in
-*search field* is the field at the end of the search base that should be used to find a specific user
+* **ldapserver** is the url to reach the ldap server
+* **ldapadmindn** is the dn for the admin account that can do searches
+* **ldapadminpw** is the password for the admin account that can do searches
+* **searchbase** is the location in ldap that the search should occur in
+* **search field** is the field at the end of the search base that should be used to find a specific user
 
 Because it is possible that a user's dn is not the same as a field designated as thier username, a search for the user based on the username is done in order to obtain the dn. This username field is the one provided in the config's searchfield. Once the user is found, the auth package uses the found users dn and provided password to try to do a ldap bind. If the bind succeeds the user is authenticated. If the bind fails, or ldap can not find the user during the search, the authentication fails.
 
