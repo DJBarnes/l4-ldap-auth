@@ -45,7 +45,7 @@ Add the Verify Service Provider to your config in ``app/config/app.php``:
 
 ### Change the driver
 
-Then change your Auth driver to ``'verify'`` in ``app/config/auth.php``:
+Then change your Auth driver to ``'l4-ldap-auth'`` in ``app/config/auth.php``:
 
 ```php
 'driver' => 'l4-ldap-auth',
@@ -76,7 +76,7 @@ return array(
 * **ldapadmindn** is the dn for the admin account that can do searches
 * **ldapadminpw** is the password for the admin account that can do searches
 * **searchbase** is the location in ldap that the search should occur in
-* **search field** is the field at the end of the search base that should be used to find a specific user
+* **searchfield** is the field at the end of the search base that should be used to find a specific user
 
 Because it is possible that a user's dn is not the same as a field designated as thier username, a search for the user based on the username is done in order to obtain the dn. This username field is the one provided in the config's searchfield. Once the user is found, the auth package uses the found users dn and provided password to try to do a ldap bind. If the bind succeeds the user is authenticated. If the bind fails, or ldap can not find the user during the search, the authentication fails.
 
@@ -98,7 +98,7 @@ Because it is possible that a user's dn is not the same as a field designated as
  
     <p>{{ Form::submit('Login') }}</p>
  
-    {{ Form::close() }}
+{{ Form::close() }}
 ```
 
 ### Controller - HomeController.php
