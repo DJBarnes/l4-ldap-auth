@@ -9,21 +9,21 @@ class L4LdapAuthUserProvider implements UserProviderInterface
     /**
      * Create a new database user provider.
      *
-     * @param  string  $ldapServer
+     * @param  string  $ldapserver
      * @param  string  $ldapadmindn
      * @param  string  $ldapadminpw
      * @param  string  $searchbase
      * @param  string  $searchfield
      * @return void
      */
-    public function __construct($ldapServer, $ldapadmindn, $ldapadminpw, $searchbase, $searchfield)
+    public function __construct($ldapserver, $ldapadmindn, $ldapadminpw, $searchbase, $searchfield)
     {
         $this->model = new GenericUser(['username' => '']);
-        $this->ldapServer = $ldapServer;
-        $this->ldapAdminDn = $ldapadmindn;
-        $this->ldapAdminPw = $ldapadminpw;
-        $this->searchBase = $searchbase;
-        $this->searchField = $searchfield;
+        $this->ldapserver = $ldapserver;
+        $this->ldapadmindn = $ldapadmindn;
+        $this->ldapadminpw = $ldapadminpw;
+        $this->searchbase = $searchbase;
+        $this->searchfield = $searchfield;
     }
 
     /**
@@ -34,16 +34,18 @@ class L4LdapAuthUserProvider implements UserProviderInterface
      */
     public function retrieveByID($identifier)
     {
-      $connectionString = $this->ldapserver;
-      $connection = ldap_connect($connectionString[0]);
+      //$connectionString = $this->ldapserver;
+      //$connection = ldap_connect($connectionString[0]);
+      $connection = ldap_connect($this->ldapserver);
       $adminBind = ldap_bind($connection, $this->ldapadmindn, $this->ldapadminpw);
       if(!$adminBind)
-        return null; //server down or admin account unavailable
+        return false;
+        // return null; //server down or admin account unavailable
 
-      $result = ldap_search($conection, $this->searchbase,'(' . $this->searchfield . '=' . $credentials['username'] . ')');
-      $information = ldap_get_entries($connection,$result);
+      $result = ldap_search($connection, $this->searchbase,'(' . $this->searchfield . '=' . $identifier. ')');
+      $information = ldap_get_entries($connection, $result);
       if ($information['count']==0)
-        null;
+        return false;
 
       ldap_close($connection);
 
@@ -60,15 +62,15 @@ class L4LdapAuthUserProvider implements UserProviderInterface
      */
     public function retrieveByCredentials(array $credentials)
     {
-      $connection = ldap_connect($this->ldapServer);
-      $adminBind = ldap_bind($connection, $this->ldapAdminDn, $this->ldapAdminPw);
+      $connection = ldap_connect($this->ldapserver);
+      $adminBind = ldap_bind($connection, $this->ldapadmindn, $this->ldapadminpw);
       if(!$adminBind)
-        return null; //server down or admin account unavailable
+        return false; //server down or admin account unavailable
 
-      $result = ldap_search($connection, $this->searchBase, '(' . $this->searchField . '=' . $credentials['username'] . ')');
-      $information = ldap_get_entries($connection,$result);
+      $result = ldap_search($connection, $this->searchbase, '(' . $this->searchfield . '=' . $credentials['username'] . ')');
+      $information = ldap_get_entries($connection, $result);
       if ($information['count']==0)
-        return null;
+        return false;
 
       ldap_close($connection);
 
@@ -90,7 +92,7 @@ class L4LdapAuthUserProvider implements UserProviderInterface
         return false;
       if($credentials['password'] == '')
         return false;
-      $connection = ldap_connect($this->ldapServer);
+      $connection = ldap_connect($this->ldapserver);
       //$result = array();
         if(!$result = @ldap_bind($connection,$user->id,$credentials['password']))
           return false;
