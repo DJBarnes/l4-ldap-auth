@@ -18,7 +18,7 @@ class L4LdapAuthUserProvider implements UserProviderInterface
      */
     public function __construct($ldapserver, $ldapadmindn, $ldapadminpw, $searchbase, $searchfield)
     {
-        $this->model = new GenericUser(['username' => '']);
+        $this->model = new GenericUser(array('username' => ''));
         $this->ldapserver = $ldapserver;
         $this->ldapadmindn = $ldapadmindn;
         $this->ldapadminpw = $ldapadminpw;
